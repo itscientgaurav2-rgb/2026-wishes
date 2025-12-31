@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy New Year 2026!</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0c0c2e, #1a1a3e);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(to right, #ffd700, #ff8c00, #ff0080);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+        
+        .year {
+            font-size: 5rem;
+            color: #ffd700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 30px;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+        
+        .sender-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .photo-container {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 5px solid #ffd700;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .photo-container:hover {
+            transform: scale(1.05);
+        }
+        
+        .photo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .sender-details {
+            text-align: center;
+        }
+        
+        .sender-name {
+            font-size: 2rem;
+            color: #ffd700;
+            margin-bottom: 10px;
+        }
+        
+        .sender-email, .sender-phone {
+            font-size: 1.1rem;
+            margin: 5px 0;
+            color: #ccc;
+        }
+        
+        .quote-container {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid #ff0080;
+            margin-top: 20px;
+        }
+        
+        .quote {
+            font-size: 1.8rem;
+            font-style: italic;
+            color: #fff;
+            line-height: 1.5;
+        }
+        
+        .controls {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            margin-bottom: 15px;
+        }
+        
+        label {
+            margin-bottom: 8px;
+            color: #ffd700;
+            font-weight: 600;
+        }
+        
+        input, textarea {
+            padding: 12px 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+        }
+        
+        input::placeholder, textarea::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(to right, #ff8c00, #ff0080);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 0, 128, 0.3);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .balloon {
+            position: absolute;
+            width: 50px;
+            height: 60px;
+            background: #ff0080;
+            border-radius: 50%;
+            z-index: 1;
+            animation: float 15s infinite linear;
+        }
+        
+        .balloon:before {
+            content: "";
+            position: absolute;
+            width: 2px;
+            height: 50px;
+            background: #fff;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .balloon:nth-child(2n) {
+            background: #ff8c00;
+            animation-duration: 12s;
+        }
+        
+        .balloon:nth-child(3n) {
+            background: #ffd700;
+            animation-duration: 18s;
+        }
+        
+        .balloon:nth-child(4n) {
+            background: #00ccff;
+            animation-duration: 14s;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 20px;
+            background: #ffd700;
+            z-index: 1;
+            animation: confetti-fall 5s infinite linear;
+        }
+        
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .firework {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #ffd700;
+            z-index: 1;
+            animation: firework-explode 2s infinite;
+        }
+        
+        @keyframes firework-explode {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(20);
+                opacity: 0;
+            }
+        }
+        
+        .message-preview {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            border: 1px dashed rgba(255, 255, 255, 0.3);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .year {
+                font-size: 4rem;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+            
+            .sender-name {
+                font-size: 1.5rem;
+            }
+            
+            .quote {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background Elements -->
+    <div id="animation-container"></div>
+    
+    <div class="container">
+        <header>
+            <h1>Happy New Year</h1>
+            <div class="year">2026</div>
+            <p>Send personalized wishes to your loved ones!</p>
+        </header>
+        
+        <div class="content">
+            <div class="card">
+                <div class="sender-info">
+                    <div class="photo-container" id="photo-container">
+                        <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Sender Photo" id="sender-photo">
+                    </div>
+                    <div class="sender-details">
+                        <h2 class="sender-name" id="sender-name">Alex Johnson</h2>
+                        <p class="sender-email" id="sender-email">alex@example.com</p>
+                        <p class="sender-phone" id="sender-phone">+1 (555) 123-4567</p>
+                    </div>
+                </div>
+                
+                <div class="quote-container">
+                    <p class="quote" id="quote-text">"May the New Year bring you happiness, peace, and prosperity. Wishing you a joyous 2026!"</p>
+                </div>
+                
+                <div class="message-preview">
+                    <p><i class="fas fa-info-circle"></i> Click on the photo above to see sender details</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>Personalize Your New Year Wish</h2>
+                <div class="controls">
+                    <div class="input-group">
+                        <label for="name-input"><i class="fas fa-user"></i> Your Name</label>
+                        <input type="text" id="name-input" placeholder="Enter your name">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="email-input"><i class="fas fa-envelope"></i> Your Email</label>
+                        <input type="email" id="email-input" placeholder="Enter your email">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="phone-input"><i class="fas fa-phone"></i> Your Phone</label>
+                        <input type="tel" id="phone-input" placeholder="Enter your phone number">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="quote-input"><i class="fas fa-quote-right"></i> Your New Year Quote</label>
+                        <textarea id="quote-input" rows="4" placeholder="Enter your New Year message...">"May the New Year bring you happiness, peace, and prosperity. Wishing you a joyous 2026!"</textarea>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="photo-url"><i class="fas fa-camera"></i> Your Photo URL</label>
+                        <input type="text" id="photo-url" placeholder="Paste image URL or keep default">
+                    </div>
+                    
+                    <button class="btn btn-primary" id="update-btn">
+                        <i class="fas fa-sync-alt"></i> Update Wish Card
+                    </button>
+                    
+                    <button class="btn btn-secondary" id="download-btn">
+                        <i class="fas fa-download"></i> Download Excel with Data
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Made with <i class="fas fa-heart" style="color:#ff0080;"></i> for New Year 2026 Celebrations</p>
+            <p>Share this wish with your friends and family!</p>
+        </footer>
+    </div>
+
+    <script>
+        // Create animation elements
+        const animationContainer = document.getElementById('animation-container');
+        
+        // Create balloons
+        for (let i = 0; i < 20; i++) {
+            const balloon = document.createElement('div');
+            balloon.classList.add('balloon');
+            balloon.style.left = Math.random() * 100 + 'vw';
+            balloon.style.animationDelay = Math.random() * 5 + 's';
+            animationContainer.appendChild(balloon);
+        }
+        
+        // Create confetti
+        for (let i = 0; i < 100; i++) {
+            const confetti = document.createElement('div');
+            confetti.classList.add('confetti');
+            confetti.style.left = Math.random() * 100 + 'vw';
+            confetti.style.backgroundColor = i % 3 === 0 ? '#ff0080' : i % 3 === 1 ? '#ff8c00' : '#00ccff';
+            confetti.style.animationDelay = Math.random() * 5 + 's';
+            confetti.style.width = Math.random() * 10 + 5 + 'px';
+            confetti.style.height = Math.random() * 15 + 10 + 'px';
+            animationContainer.appendChild(confetti);
+        }
+        
+        // Create fireworks
+        for (let i = 0; i < 15; i++) {
+            const firework = document.createElement('div');
+            firework.classList.add('firework');
+            firework.style.left = Math.random() * 100 + 'vw';
+            firework.style.top = Math.random() * 100 + 'vh';
+            firework.style.backgroundColor = i % 3 === 0 ? '#ff0080' : i % 3 === 1 ? '#ff8c00' : '#ffd700';
+            firework.style.animationDelay = Math.random() * 3 + 's';
+            animationContainer.appendChild(firework);
+        }
+        
+        // Get DOM elements
+        const senderName = document.getElementById('sender-name');
+        const senderEmail = document.getElementById('sender-email');
+        const senderPhone = document.getElementById('sender-phone');
+        const senderPhoto = document.getElementById('sender-photo');
+        const quoteText = document.getElementById('quote-text');
+        const photoContainer = document.getElementById('photo-container');
+        
+        const nameInput = document.getElementById('name-input');
+        const emailInput = document.getElementById('email-input');
+        const phoneInput = document.getElementById('phone-input');
+        const quoteInput = document.getElementById('quote-input');
+        const photoUrlInput = document.getElementById('photo-url');
+        
+        const updateBtn = document.getElementById('update-btn');
+        const downloadBtn = document.getElementById('download-btn');
+        
+        // Initialize data array for Excel export
+        let wishData = [
+            {
+                name: "Alex Johnson",
+                email: "alex@example.com",
+                phone: "+1 (555) 123-4567",
+                quote: '"May the New Year bring you happiness, peace, and prosperity. Wishing you a joyous 2026!"',
+                photoUrl: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                timestamp: new Date().toISOString()
+            }
+        ];
+        
+        // Toggle sender details visibility on photo click
+        let detailsVisible = false;
+        photoContainer.addEventListener('click', function() {
+            detailsVisible = !detailsVisible;
+            
+            if (detailsVisible) {
+                senderEmail.classList.remove('hidden');
+                senderPhone.classList.remove('hidden');
+                this.style.borderColor = '#ff0080';
+            } else {
+                senderEmail.classList.add('hidden');
+                senderPhone.classList.add('hidden');
+                this.style.borderColor = '#ffd700';
+            }
+        });
+        
+        // Update wish card
+        updateBtn.addEventListener('click', function() {
+            // Get input values
+            const name = nameInput.value.trim() || "Alex Johnson";
+            const email = emailInput.value.trim() || "alex@example.com";
+            const phone = phoneInput.value.trim() || "+1 (555) 123-4567";
+            const quote = quoteInput.value.trim() || '"May the New Year bring you happiness, peace, and prosperity. Wishing you a joyous 2026!"';
+            const photoUrl = photoUrlInput.value.trim() || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80";
+            
+            // Update card
+            senderName.textContent = name;
+            senderEmail.textContent = email;
+            senderPhone.textContent = phone;
+            quoteText.textContent = quote;
+            senderPhoto.src = photoUrl;
+            
+            // Hide details after update
+            senderEmail.classList.add('hidden');
+            senderPhone.classList.add('hidden');
+            photoContainer.style.borderColor = '#ffd700';
+            detailsVisible = false;
+            
+            // Add to data array
+            wishData.push({
+                name: name,
+                email: email,
+                phone: phone,
+                quote: quote,
+                photoUrl: photoUrl,
+                timestamp: new Date().toISOString()
+            });
+            
+            // Show success message
+            showNotification("Wish card updated successfully!");
+            
+            // Create celebration animation
+            createCelebration();
+        });
+        
+        // Download Excel file
+        downloadBtn.addEventListener('click', function() {
+            try {
+                // Create worksheet
+                const ws = XLSX.utils.json_to_sheet(wishData);
+                
+                // Create workbook
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, "New Year Wishes");
+                
+                // Generate Excel file
+                XLSX.writeFile(wb, "NewYearWishes_2026.xlsx");
+                
+                showNotification("Excel file downloaded successfully!");
+            } catch (error) {
+                console.error("Error generating Excel file:", error);
+                showNotification("Error generating Excel file. Please try again.", true);
+            }
+        });
+        
+        // Create celebration effect
+        function createCelebration() {
+            // Add extra balloons
+            for (let i = 0; i < 10; i++) {
+                setTimeout(() => {
+                    const balloon = document.createElement('div');
+                    balloon.classList.add('balloon');
+                    balloon.style.left = Math.random() * 100 + 'vw';
+                    balloon.style.backgroundColor = i % 2 === 0 ? '#ff0080' : '#ffd700';
+                    balloon.style.animationDuration = '8s';
+                    animationContainer.appendChild(balloon);
+                    
+                    // Remove balloon after animation
+                    setTimeout(() => {
+                        balloon.remove();
+                    }, 8000);
+                }, i * 200);
+            }
+            
+            // Add extra confetti
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.classList.add('confetti');
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.backgroundColor = i % 3 === 0 ? '#ff0080' : i % 3 === 1 ? '#ff8c00' : '#00ccff';
+                    confetti.style.animationDuration = '3s';
+                    animationContainer.appendChild(confetti);
+                    
+                    // Remove confetti after animation
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 3000);
+                }, i * 50);
+            }
+        }
+        
+        // Show notification
+        function showNotification(message, isError = false) {
+            // Remove existing notification
+            const existingNotification = document.querySelector('.notification');
+            if (existingNotification) {
+                existingNotification.remove();
+            }
+            
+            // Create notification
+            const notification = document.createElement('div');
+            notification.classList.add('notification');
+            notification.textContent = message;
+            notification.style.position = 'fixed';
+            notification.style.top = '20px';
+            notification.style.right = '20px';
+            notification.style.padding = '15px 20px';
+            notification.style.borderRadius = '10px';
+            notification.style.backgroundColor = isError ? '#ff3333' : '#4CAF50';
+            notification.style.color = 'white';
+            notification.style.zIndex = '1000';
+            notification.style.boxShadow = '0 5px 15px rgba(0,0,0,0.3)';
+            notification.style.fontWeight = '600';
+            
+            document.body.appendChild(notification);
+            
+            // Remove notification after 3 seconds
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transition = 'opacity 0.5s';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 500);
+            }, 3000);
+        }
+        
+        // Initialize with example data
+        nameInput.value = "Alex Johnson";
+        emailInput.value = "alex@example.com";
+        phoneInput.value = "+1 (555) 123-4567";
+        photoUrlInput.value = "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80";
+        
+        // Add some initial celebration
+        setTimeout(createCelebration, 1000);
+    </script>
+</body>
+</html>
